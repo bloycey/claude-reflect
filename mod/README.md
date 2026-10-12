@@ -39,7 +39,8 @@ Use either this or the Python plugin, not both (every correction would be captur
    `{is_rule, rule, scope, confidence}`; anything malformed, below 0.7, multi-line, over 200 characters or
    secret-shaped is dropped.
 3. **The band** - each found rule, full text, with:
-   - **Save to ./CLAUDE.md** or **Save to ~/.claude/CLAUDE.md** (the scope the check suggested),
+   - **Save to ./CLAUDE.md** or **Save to ~/.claude/CLAUDE.md** (the scope the check suggested); the **Repo file**
+     setting in `/config` switches the repo target to `./CLAUDE.local.md` for rules that are yours alone,
    - **Global instead** / **This repo instead**,
    - **Edit** - puts `remember: <rule>` in an empty prompt box to reword,
    - **Skip**.
@@ -76,5 +77,5 @@ Code config directory) until you decide on them.
 
 ```bash
 claude plugin validate mod
-claude plugin test mod        # 10 tests, mocked model - free
+claude plugin test mod        # 11 tests, mocked model - free
 ```

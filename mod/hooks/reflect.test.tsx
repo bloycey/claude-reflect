@@ -123,6 +123,18 @@ test('a Russian correction becomes a band row, and Save writes the repo CLAUDE.m
   expect((await compose($)).sections.at(-1)?.text).toContain('- Use pnpm, not npm, in this repo')
 })
 
+test('projectFile: CLAUDE.local.md sends a repo rule there and names it on the button', { options: { projectFile: 'CLAUDE.local.md' } }, async ($, on) => {
+  const w = world(on, { verdicts: { 'нет, используй pnpm': PNPM } })
+  await start($)
+  await say($, w, 'нет, используй pnpm')
+  const ui = await mount($)
+  expect((await ui.findAll({ type: 'Button' })).find(b => b.key?.startsWith('save:'))?.text).toBe('Save to ./CLAUDE.local.md')
+  await ui.unmount()
+  await press($, 'save:')
+  expect(w.files['/repo/CLAUDE.local.md']).toContain('- Use pnpm, not npm, in this repo')
+  expect(w.files['/repo/CLAUDE.md']).toBeUndefined()
+})
+
 test('a project rule saved in one repo stays out of another repo\'s prompt', async ($, on) => {
   let root = '/repo'
   const w = world(on, { verdicts: { 'нет, используй pnpm': PNPM }, root: () => root })

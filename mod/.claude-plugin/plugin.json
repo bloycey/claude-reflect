@@ -8,5 +8,17 @@
     "url": "https://github.com/bayramannakov"
   },
   "repository": "https://github.com/bayramannakov/claude-reflect",
-  "license": "MIT"
+  "license": "MIT",
+  "userConfig": {
+    "projectFile": {
+      "type": "string",
+      "title": "Repo file",
+      "description": "Which file in the repository a 'this repo' rule is saved to: CLAUDE.md (shared with the team) or CLAUDE.local.md (yours alone, gitignored).",
+      "default": "CLAUDE.md",
+      "options": [
+        "CLAUDE.md",
+        "CLAUDE.local.md"
+      ]
+    }
+  }
 }

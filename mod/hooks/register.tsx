@@ -34,6 +34,8 @@ const SECRET = [
 
 // The module's own: a reload drops them; the store keeps the learnings themselves.
 let model = 'haiku'
+/** The file in the repository a 'this repo' rule goes to: the projectFile option. */
+let projectFile = 'CLAUDE.md'
 let isDraining = false
 /** Saves to CLAUDE.md files run one after another inside this session. */
 let writing: Promise<unknown> = Promise.resolve()
@@ -165,7 +167,7 @@ async function refreshBand($: EngineInterface) {
 
 async function fileFor($: EngineInterface, scope: 'global' | 'project', root: string) {
   if (scope === 'global') return `${(await $.env.get('HOME')) ?? ''}/.claude/CLAUDE.md`
-  return `${root}/CLAUDE.md`
+  return `${root}/${projectFile}`
 }
 
 async function readText($: EngineInterface, path: string) {
@@ -314,6 +316,7 @@ async function edit($: EngineInterface, l: Learning) {
 
 export const register: Register = (on, options) => {
   if (typeof options.model === 'string' && options.model.trim() !== '') model = options.model.trim()
+  projectFile = options.projectFile === 'CLAUDE.local.md' ? 'CLAUDE.local.md' : 'CLAUDE.md'
 
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'reflect-queue', description: 'List the learnings reflect found here and their state' })
@@ -388,7 +391,7 @@ export const register: Register = (on, options) => {
               <Button
                 key={`save:${l.id}`}
                 variant="primary"
-                label={l.scope === 'project' ? 'Save to ./CLAUDE.md' : 'Save to ~/.claude/CLAUDE.md'}
+                label={l.scope === 'project' ? `Save to ./${projectFile}` : 'Save to ~/.claude/CLAUDE.md'}
                 onPress={() => saveTo($, l, l.scope)}
               />
               <Button
